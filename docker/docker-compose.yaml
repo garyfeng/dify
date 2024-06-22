@@ -418,6 +418,8 @@ services:
       interval: 1s
       timeout: 3s
       retries: 30
+    # https://github.com/langgenius/dify/discussions/4822
+    user: "503:20"
 
   # The redis cache.
   redis:
@@ -433,6 +435,8 @@ services:
     # uncomment to expose redis port to host
     # ports:
     #   - "6379:6379"
+    # https://github.com/langgenius/dify/discussions/4822
+    user: "503:20"
 
   # The Weaviate vector store.
   weaviate:
