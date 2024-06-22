@@ -390,8 +390,8 @@ services:
       # The DSN for Sentry error reporting. If not set, Sentry error reporting will be disabled.
       SENTRY_DSN: ''
     # uncomment to expose dify-web port to host
-    # ports:
-    #   - "3000:3000"
+    ports:
+      - "3000:3000"
 
   # The postgres database.
   db:
@@ -406,7 +406,8 @@ services:
       # postgres data directory
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      - ./volumes/db/data:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
+      # - ./volumes/db/data:/var/lib/postgresql/data
       # notice!: if you use windows-wsl2, postgres may not work properly due to the ntfs issue.you can use volumes to mount the data directory to the host.
       # if you use the following config, you need to uncomment the volumes configuration below at the end of the file.
       # - postgres:/var/lib/postgresql/data
@@ -427,7 +428,8 @@ services:
     restart: always
     volumes:
       # Mount the redis data directory to the container.
-      - ./volumes/redis/data:/data
+      - redis-data:/data
+      # - ./volumes/redis/data:/data
     # Set the redis password when startup redis server.
     command: redis-server --requirepass difyai123456
     healthcheck:
@@ -554,6 +556,14 @@ services:
 # notice: if you use windows-wsl2, postgres may not work properly due to the ntfs issue.you can use volumes to mount the data directory to the host.
 # volumes:
 #   postgres:
+
+# MacOS docker compose permission deny issue
+# https://github.com/langgenius/dify/discussions/4822
+volumes:
+  db-data:
+  redis-data:
+
+
 networks:
   # create a network between sandbox, api and ssrf_proxy, and can not access outside.
   ssrf_proxy_network:
