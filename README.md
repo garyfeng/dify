@@ -177,7 +177,9 @@ cd docker
 docker compose up -d
 ```
 
-After running, you can access the Dify dashboard in your browser at [http://localhost/install](http://localhost/install) and start the initialization process.
+After running, you can access the Dify dashboard in your browser at [http://localhost:3000/install](http://localhost:3000/install) and start the initialization process.
+
+see https://github.com/langgenius/dify/issues/4553
 
 > If you'd like to contribute to Dify or do additional development, refer to our [guide to deploying from source code](https://docs.dify.ai/getting-started/install-self-hosted/local-source-code)
 
