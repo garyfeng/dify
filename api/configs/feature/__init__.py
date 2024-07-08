@@ -1,7 +1,7 @@
 from typing import Optional
 
 from pydantic import AliasChoices, BaseModel, Field, NonNegativeInt, PositiveInt
-
+from flask import current_app
 
 class SecurityConfigs(BaseModel):
     """
@@ -228,7 +228,8 @@ class OAuthConfigs(BaseModel):
     """
     OAUTH_REDIRECT_PATH: str = Field(
         description='redirect path for OAuth',
-        default='/console/api/oauth/authorize',
+        default=current_app.config.get("CONSOLE_API_URL")
+                      + '/console/api/oauth/authorize',
     )
 
     GITHUB_CLIENT_ID: Optional[str] = Field(
