@@ -442,6 +442,8 @@ services:
     networks:
       - ssrf_proxy_network
       - default
+    ports:
+      - 5001:5001
 
   # worker service
   # The Celery worker for processing the queue.
@@ -485,6 +487,8 @@ services:
       INDEXING_MAX_SEGMENTATION_TOKENS_LENGTH: ${INDEXING_MAX_SEGMENTATION_TOKENS_LENGTH:-}
       PM2_INSTANCES: ${PM2_INSTANCES:-2}
       LOOP_NODE_MAX_COUNT: ${LOOP_NODE_MAX_COUNT:-100}
+    ports:
+      - 3000:3000
 
   # The postgres database.
   db:
@@ -502,7 +506,7 @@ services:
                -c 'maintenance_work_mem=${POSTGRES_MAINTENANCE_WORK_MEM:-64MB}'
                -c 'effective_cache_size=${POSTGRES_EFFECTIVE_CACHE_SIZE:-4096MB}'
     volumes:
-      - ./volumes/db/data:/var/lib/postgresql/data
+      - db_data2:/var/lib/postgresql/data
     healthcheck:
       test: [ 'CMD', 'pg_isready' ]
       interval: 1s
@@ -518,9 +522,7 @@ services:
     environment:
       REDISCLI_AUTH: ${REDIS_PASSWORD:-difyai123456}
     volumes:
-      # Mount the redis data directory to the container.
-      - ./volumes/redis/data:/data
-    # Set the redis password when startup redis server.
+      - redis_data2:/data
     command: redis-server --requirepass ${REDIS_PASSWORD:-difyai123456}
     healthcheck:
       test: [ 'CMD', 'redis-cli', 'ping' ]
@@ -550,7 +552,7 @@ services:
 
   # plugin daemon
   plugin_daemon:
-    image: langgenius/dify-plugin-daemon:0.0.3-local
+    image: langgenius/dify-plugin-daemon:main-local
     restart: always
     environment:
       # Use the shared environment variables.
@@ -1021,3 +1023,5 @@ networks:
 volumes:
   oradata:
   dify_es01_data:
+  db_data2:
+  redis_data2:
