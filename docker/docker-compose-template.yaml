@@ -283,10 +283,10 @@ services:
     profiles:
       - certbot
     volumes:
-      - ./volumes/certbot/conf:/etc/letsencrypt
-      - ./volumes/certbot/www:/var/www/html
-      - ./volumes/certbot/logs:/var/log/letsencrypt
-      - ./volumes/certbot/conf/live:/etc/letsencrypt/live
+      - certbot_conf:/etc/letsencrypt
+      - certbot_www:/var/www/html
+      - certbot_logs:/var/log/letsencrypt
+      - certbot_conf_live:/etc/letsencrypt/live
       - ./certbot/update-cert.template.txt:/update-cert.template.txt
       - ./certbot/docker-entrypoint.sh:/docker-entrypoint.sh
     environment:
@@ -308,9 +308,9 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/docker-entrypoint.sh:/docker-entrypoint-mount.sh
       - ./nginx/ssl:/etc/ssl # cert dir (legacy)
-      - ./volumes/certbot/conf/live:/etc/letsencrypt/live # cert dir (with certbot container)
-      - ./volumes/certbot/conf:/etc/letsencrypt
-      - ./volumes/certbot/www:/var/www/html
+      - certbot_conf_live:/etc/letsencrypt/live # cert dir (with certbot container)
+      - certbot_conf:/etc/letsencrypt
+      - certbot_www:/var/www/html
     entrypoint:
       [
         "sh",
@@ -790,4 +790,8 @@ volumes:
   dify_es01_data:
   db_data:
   redis_data:
+  certbot_conf:
+  certbot_conf_live:
+  certbot_www:
+  certbot_logs:
   plugin_daemon_data:
